@@ -14,7 +14,7 @@ class SectionCard extends StatelessWidget {
     required this.child,
     this.subtitle,
     this.trailing,
-    this.padding = const EdgeInsets.all(18),
+    this.padding = const EdgeInsets.all(14),
   });
 
   final String title;
@@ -42,9 +42,12 @@ class SectionCard extends StatelessWidget {
                       if (subtitle case final sub?)
                         Padding(
                           padding: const EdgeInsets.only(top: 2),
-                          child: Text(sub,
-                              style: theme.textTheme.bodySmall?.copyWith(
-                                  color: theme.colorScheme.onSurfaceVariant)),
+                          child: Text(
+                            sub,
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: theme.colorScheme.onSurfaceVariant,
+                            ),
+                          ),
                         ),
                     ],
                   ),
@@ -52,7 +55,7 @@ class SectionCard extends StatelessWidget {
                 ?trailing,
               ],
             ),
-            const SizedBox(height: 14),
+            const SizedBox(height: 12),
             child,
           ],
         ),
@@ -93,10 +96,10 @@ class KpiTile extends StatelessWidget {
     final good = deltaGood;
     return Card(
       child: InkWell(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(12),
         onTap: () {},
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(14),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -115,9 +118,10 @@ class KpiTile extends StatelessWidget {
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: theme.textTheme.labelMedium?.copyWith(
-                            color: theme.colorScheme.onSurfaceVariant,
-                            fontWeight: FontWeight.w600,
-                            height: 1.25),
+                          color: theme.colorScheme.onSurfaceVariant,
+                          fontWeight: FontWeight.w600,
+                          height: 1.25,
+                        ),
                       ),
                     ),
                   ),
@@ -133,19 +137,23 @@ class KpiTile extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: theme.textTheme.headlineMedium?.copyWith(
-                          fontSize: 28,
-                          height: 1.0,
-                          fontWeight: FontWeight.w800,
-                          letterSpacing: -1.0),
+                        fontSize: 22,
+                        height: 1.0,
+                        fontWeight: FontWeight.w800,
+                        letterSpacing: -0.8,
+                      ),
                     ),
                   ),
                   if (unit != null) ...[
                     const SizedBox(width: 4),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 2),
-                      child: Text(unit!,
-                          style: theme.textTheme.labelMedium?.copyWith(
-                              color: theme.colorScheme.onSurfaceVariant)),
+                      child: Text(
+                        unit!,
+                        style: theme.textTheme.labelMedium?.copyWith(
+                          color: theme.colorScheme.onSurfaceVariant,
+                        ),
+                      ),
                     ),
                   ],
                 ],
@@ -158,22 +166,26 @@ class KpiTile extends StatelessWidget {
                     const SizedBox(width: 7),
                   ],
                   Expanded(
-                    child: Text('vs last period',
-                        overflow: TextOverflow.ellipsis,
-                        style: theme.textTheme.labelSmall?.copyWith(
-                            color: theme.colorScheme.onSurfaceVariant)),
+                    child: Text(
+                      'vs last period',
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
+                    ),
                   ),
                 ],
               ),
               if (sparkData.isNotEmpty) ...[
-                const SizedBox(height: 8),
+                const SizedBox(height: 7),
                 SizedBox(
-                  height: 26,
+                  height: 22,
                   child: Sparkline(
-                      values: sparkData,
-                      color: accent,
-                      strokeWidth: 1.8,
-                      height: 26),
+                    values: sparkData,
+                    color: accent,
+                    strokeWidth: 1.6,
+                    height: 22,
+                  ),
                 ),
               ],
             ],
@@ -211,9 +223,14 @@ class TrendPill extends StatelessWidget {
             color: c,
           ),
           const SizedBox(width: 3),
-          Text(delta,
-              style: TextStyle(
-                  color: c, fontSize: 11.5, fontWeight: FontWeight.w800)),
+          Text(
+            delta,
+            style: TextStyle(
+              color: c,
+              fontSize: 11.5,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
         ],
       ),
     );
@@ -293,8 +310,9 @@ class EmptyState extends StatelessWidget {
             Text(
               message,
               textAlign: TextAlign.center,
-              style: theme.textTheme.bodySmall
-                  ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
             ),
             if (action != null) ...[const SizedBox(height: 14), action!],
           ],
@@ -307,7 +325,12 @@ class EmptyState extends StatelessWidget {
 // ════════════════════════════════════════════════════════════════ Chips ══
 
 class StatusChip extends StatelessWidget {
-  const StatusChip({super.key, required this.label, required this.color, this.dense = false});
+  const StatusChip({
+    super.key,
+    required this.label,
+    required this.color,
+    this.dense = false,
+  });
 
   final String label;
   final Color color;
@@ -380,8 +403,7 @@ class UserAvatar extends StatelessWidget {
         .toUpperCase();
     // Deterministic pastel from the name.
     final hue = (name.hashCode % 360).toDouble();
-    final bg = color ??
-        HSLColor.fromAHSL(1, hue, 0.55, 0.82).toColor();
+    final bg = color ?? HSLColor.fromAHSL(1, hue, 0.55, 0.82).toColor();
     final fg = HSLColor.fromAHSL(1, hue, 0.55, 0.30).toColor();
     return Container(
       width: size,
@@ -418,27 +440,43 @@ class PageHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Row(
+    final header = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(title, style: theme.textTheme.headlineSmall),
-              const SizedBox(height: 4),
-              Text(subtitle,
-                  style: theme.textTheme.bodyMedium
-                      ?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
-            ],
+        Text(title, style: theme.textTheme.headlineSmall),
+        const SizedBox(height: 4),
+        Text(
+          subtitle,
+          style: theme.textTheme.bodyMedium?.copyWith(
+            color: theme.colorScheme.onSurfaceVariant,
           ),
         ),
-        if (actions != null) ...[
-          const SizedBox(width: 12),
-          Wrap(spacing: 10, runSpacing: 10, children: actions!),
-        ],
       ],
     );
+    if (actions == null || actions!.isEmpty) return header;
+
+    final actionsRow = Wrap(spacing: 8, runSpacing: 8, children: actions!);
+    // Narrow screens: stack actions under the title instead of overflowing.
+    return LayoutBuilder(builder: (context, constraints) {
+      if (constraints.maxWidth < 520) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            header,
+            const SizedBox(height: 10),
+            actionsRow,
+          ],
+        );
+      }
+      return Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(child: header),
+          const SizedBox(width: 12),
+          actionsRow,
+        ],
+      );
+    });
   }
 }
 
@@ -485,7 +523,12 @@ class IconAction extends StatelessWidget {
 }
 
 class KeyValueLine extends StatelessWidget {
-  const KeyValueLine({super.key, required this.k, required this.v, this.vColor});
+  const KeyValueLine({
+    super.key,
+    required this.k,
+    required this.v,
+    this.vColor,
+  });
 
   final String k;
   final String v;
@@ -499,12 +542,19 @@ class KeyValueLine extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(k,
-              style: theme.textTheme.bodySmall
-                  ?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
-          Text(v,
-              style: theme.textTheme.labelMedium?.copyWith(
-                  fontWeight: FontWeight.w700, color: vColor)),
+          Text(
+            k,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+          ),
+          Text(
+            v,
+            style: theme.textTheme.labelMedium?.copyWith(
+              fontWeight: FontWeight.w700,
+              color: vColor,
+            ),
+          ),
         ],
       ),
     );

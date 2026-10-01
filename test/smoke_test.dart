@@ -55,4 +55,35 @@ void main() {
       expect(find.byType(DispatcherDashboard), findsOneWidget);
     }
   });
+
+  testWidgets('mobile viewport — compact single-pane login → shell',
+      (tester) async {
+    // iPhone 14-class surface (logical 390×844).
+    tester.view.physicalSize = const Size(1170, 2532);
+    tester.view.devicePixelRatio = 3.0;
+    addTearDown(tester.view.reset);
+
+    await tester.pumpWidget(const FleetOpsApp());
+    await tester.pumpAndSettle();
+    expect(find.text('Welcome back'), findsOneWidget);
+
+    // Any RenderFlex overflow above fails the test automatically.
+    await tester.ensureVisible(find.text('Dispatcher'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Dispatcher'));
+    await pumpFrames(tester, frames: 6);
+    expect(find.byType(AppShell), findsOneWidget);
+  });
+
+  testWidgets('foldable viewport — login survives 280 px width',
+      (tester) async {
+    tester.view.physicalSize = const Size(560, 1306);
+    tester.view.devicePixelRatio = 2.0;
+    addTearDown(tester.view.reset);
+
+    await tester.pumpWidget(const FleetOpsApp());
+    await tester.pumpAndSettle();
+    expect(find.text('Welcome back'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
 }

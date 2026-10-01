@@ -38,6 +38,13 @@ class _FleetOpsAppState extends State<FleetOpsApp> {
           theme: AppTheme.light(),
           darkTheme: AppTheme.dark(),
           themeMode: _state.isDark ? ThemeMode.dark : ThemeMode.light,
+          builder: (context, child) => MediaQuery.withClampedTextScaling(
+            // Keep the compact ramp intact: system-wide font scaling is
+            // still honoured, but can no longer blow the dense layout apart.
+            minScaleFactor: 0.85,
+            maxScaleFactor: 1.15,
+            child: child!,
+          ),
           home: _state.signedIn
               ? AppShell(state: _state)
               : LoginScreen(onSignIn: _state.signIn),

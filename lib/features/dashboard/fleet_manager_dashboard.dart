@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../core/data/mock_data.dart';
 import '../../core/models/models.dart';
 import '../../core/state/app_scope.dart';
+import '../../core/theme/dimens.dart';
 import '../../core/theme/palette.dart';
 import '../../core/widgets/charts.dart';
 import '../../core/widgets/common.dart';
@@ -23,7 +24,7 @@ class FleetManagerDashboard extends StatelessWidget {
     return SafeArea(
       bottom: false,
       child: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
+        padding: Dimens.pagePadding(MediaQuery.sizeOf(context).width),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

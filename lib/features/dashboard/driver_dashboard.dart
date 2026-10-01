@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../core/data/mock_data.dart';
 import '../../core/models/models.dart';
 import '../../core/state/app_scope.dart';
+import '../../core/theme/dimens.dart';
 import '../../core/theme/palette.dart';
 import '../../core/widgets/charts.dart';
 import '../../core/widgets/common.dart';
@@ -25,7 +26,7 @@ class DriverDashboard extends StatelessWidget {
     final myVehicle = s.liveVehicles.where((v) => v.driverId == me.id).firstOrNull ?? vehicles.first;
 
     final body = SingleChildScrollView(
-      padding: const EdgeInsets.all(18),
+      padding: Dimens.pagePadding(MediaQuery.sizeOf(context).width),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

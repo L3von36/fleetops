@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../core/data/mock_data.dart';
 import '../../core/models/models.dart';
 import '../../core/state/app_scope.dart';
+import '../../core/theme/dimens.dart';
 import '../../core/theme/palette.dart';
 import '../../core/widgets/charts.dart';
 import '../../core/widgets/common.dart';
@@ -20,7 +21,7 @@ class DispatcherDashboard extends StatelessWidget {
     return SafeArea(
       bottom: false,
       child: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
+        padding: Dimens.pagePadding(MediaQuery.sizeOf(context).width),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -109,9 +110,17 @@ class _UnassignedQueue extends StatelessWidget {
                 Icon(Icons.add_circle_outline_rounded,
                     size: 18, color: theme.colorScheme.onSurfaceVariant),
                 const SizedBox(width: 8),
-                Text('Drag new orders here · CSV import · API',
+                Flexible(
+                  child: Text(
+                    'Drag new orders here · CSV import · API',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
                     style: theme.textTheme.labelMedium?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant)),
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
