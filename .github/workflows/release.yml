@@ -77,8 +77,9 @@ jobs:
         run: |
           cp build/app/outputs/flutter-apk/app-release.apk \
              "FleetOps-Android-${GITHUB_REF_NAME}.apk"
-          cp build/app/outputs/flutter-release.aab \
-             "FleetOps-Android-${GITHUB_REF_NAME}.aab"
+          AAB=$(find build/app/outputs -type f -name "*.aab" | head -1)
+          echo "AAB found at: $AAB"
+          cp "$AAB" "FleetOps-Android-${GITHUB_REF_NAME}.aab"
 
       - uses: actions/upload-artifact@v4
         with:
