@@ -102,25 +102,23 @@ class KpiTile extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   if (icon != null)
-                    Container(
-                      width: 34,
-                      height: 34,
-                      decoration: BoxDecoration(
-                        color: accent.withValues(alpha: 0.12),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Icon(icon, size: 18, color: accent),
-                    ),
-                  if (icon != null) const SizedBox(width: 8),
+                    GradientIconBox(icon: icon!, accent: accent),
+                  if (icon != null) const SizedBox(width: 10),
                   Expanded(
-                    child: Text(
-                      label,
-                      overflow: TextOverflow.ellipsis,
-                      style: theme.textTheme.labelMedium?.copyWith(
-                          color: theme.colorScheme.onSurfaceVariant,
-                          fontWeight: FontWeight.w600),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 2),
+                      child: Text(
+                        label,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.textTheme.labelMedium?.copyWith(
+                            color: theme.colorScheme.onSurfaceVariant,
+                            fontWeight: FontWeight.w600,
+                            height: 1.25),
+                      ),
                     ),
                   ),
                 ],
@@ -135,7 +133,10 @@ class KpiTile extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: theme.textTheme.headlineMedium?.copyWith(
-                          fontSize: 26, height: 1.0),
+                          fontSize: 28,
+                          height: 1.0,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: -1.0),
                     ),
                   ),
                   if (unit != null) ...[
@@ -153,18 +154,8 @@ class KpiTile extends StatelessWidget {
               Row(
                 children: [
                   if (delta != null) ...[
-                    Icon(
-                        good
-                            ? Icons.trending_up_rounded
-                            : Icons.trending_down_rounded,
-                        size: 15,
-                        color: good ? Palette.success : Palette.danger),
-                    const SizedBox(width: 3),
-                    Text(delta!,
-                        style: theme.textTheme.labelSmall?.copyWith(
-                            color: good ? Palette.success : Palette.danger,
-                            fontWeight: FontWeight.w700)),
-                    const SizedBox(width: 6),
+                    TrendPill(delta: delta!, good: good),
+                    const SizedBox(width: 7),
                   ],
                   Expanded(
                     child: Text('vs last period',
@@ -187,6 +178,126 @@ class KpiTile extends StatelessWidget {
               ],
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+// ══════════════════════════════════════════════════════════ Trend pill ══
+
+/// Compact rounded pill for period-over-period deltas.
+class TrendPill extends StatelessWidget {
+  const TrendPill({super.key, required this.delta, required this.good});
+
+  final String delta;
+  final bool good;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = good ? Palette.success : Palette.danger;
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2.5),
+      decoration: BoxDecoration(
+        color: c.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(999),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            good ? Icons.trending_up_rounded : Icons.trending_down_rounded,
+            size: 13,
+            color: c,
+          ),
+          const SizedBox(width: 3),
+          Text(delta,
+              style: TextStyle(
+                  color: c, fontSize: 11.5, fontWeight: FontWeight.w800)),
+        ],
+      ),
+    );
+  }
+}
+
+// ════════════════════════════════════════════════════ Gradient icon box ══
+
+/// Softly-glowing tinted square that hosts an icon — used in KPI tiles,
+/// list leading slots and empty states.
+class GradientIconBox extends StatelessWidget {
+  const GradientIconBox({
+    super.key,
+    required this.icon,
+    this.accent = Palette.brand,
+    this.size = 36,
+    this.iconSize = 19,
+  });
+
+  final IconData icon;
+  final Color accent;
+  final double size;
+  final double iconSize;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            accent.withValues(alpha: 0.16),
+            accent.withValues(alpha: 0.07),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(size * 0.30),
+        border: Border.all(color: accent.withValues(alpha: 0.14)),
+      ),
+      child: Icon(icon, size: iconSize, color: accent),
+    );
+  }
+}
+
+// ═════════════════════════════════════════════════════════ Empty state ══
+
+/// Friendly placeholder for empty panels / filters with no rows.
+class EmptyState extends StatelessWidget {
+  const EmptyState({
+    super.key,
+    required this.icon,
+    required this.title,
+    required this.message,
+    this.action,
+  });
+
+  final IconData icon;
+  final String title;
+  final String message;
+  final Widget? action;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 34, horizontal: 22),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            GradientIconBox(icon: icon, size: 56, iconSize: 28),
+            const SizedBox(height: 14),
+            Text(title, style: theme.textTheme.titleMedium),
+            const SizedBox(height: 4),
+            Text(
+              message,
+              textAlign: TextAlign.center,
+              style: theme.textTheme.bodySmall
+                  ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+            ),
+            if (action != null) ...[const SizedBox(height: 14), action!],
+          ],
         ),
       ),
     );

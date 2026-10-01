@@ -6,3 +6,7 @@ export 'safety_dashboard.dart';
 export 'finance_dashboard.dart';
 export 'fuel_dashboard.dart';
 export 'executive_dashboard.dart';
+export 'super_admin_dashboard.dart';
+export 'depot_dashboard.dart';
+export 'customer_portal_dashboard.dart';
+export 'auditor_dashboard.dart';

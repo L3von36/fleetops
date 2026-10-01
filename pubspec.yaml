@@ -16,7 +16,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 1.0.0+1
+version: 1.1.0+2
 
 environment:
   sdk: ^3.13.4
@@ -46,6 +46,11 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^6.0.0
 
+  # Codegen-only: generates native splash screens (Android 12+ & legacy,
+  # iOS, web). Run `dart run flutter_native_splash:create` after changing
+  # the config below. Does not ship in the binary.
+  flutter_native_splash: ^2.4.4
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -56,6 +61,19 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
+flutter_native_splash:
+  color: "#F5F7FB"
+  color_dark: "#0A101E"
+  image: assets/splash_logo.png
+  image_dark: assets/splash_logo.png
+  android_12:
+    color: "#F5F7FB"
+    color_dark: "#0A101E"
+    image: assets/splash_logo_android12.png
+    image_dark: assets/splash_logo_android12.png
+  web: true
+  fullscreen: false
 
   # To add assets to your application, add an assets section, like this:
   # assets:

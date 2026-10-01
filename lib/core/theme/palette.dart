@@ -10,8 +10,17 @@ abstract final class Palette {
   static const Color brand = Color(0xFF2C5BF2);
   static const Color brandDeep = Color(0xFF1D3FB8);
   static const Color brandSoft = Color(0xFFDCE5FF);
+  static const Color brandBright = Color(0xFF4F7BFF);
+  static const Color cyan = Color(0xFF06B6D4);
   static const Color teal = Color(0xFF0E9394);
   static const Color violet = Color(0xFF7A5AF8);
+
+  /// Signature brand gradient (logo, hero panels, primary accents).
+  static const List<Color> brandGradient = [
+    Color(0xFF1D3FB8),
+    Color(0xFF2C5BF2),
+    Color(0xFF4F7BFF),
+  ];
 
   // ── Semantic ─────────────────────────────────────────────────────────
   static const Color success = Color(0xFF16A34A);
@@ -28,12 +37,16 @@ abstract final class Palette {
   static const Color outlineLight = Color(0xFFE3E9F2);
 
   // ── Dark neutrals (deep navy) ────────────────────────────────────────
-  static const Color bgDark = Color(0xFF0B1220);
+  static const Color bgDark = Color(0xFF0A101E);
   static const Color surfaceDark = Color(0xFF121C30);
   static const Color surfaceAltDark = Color(0xFF1A2740);
   static const Color textDark = Color(0xFFE7EEF9);
   static const Color textMutedDark = Color(0xFF8DA2BF);
   static const Color outlineDark = Color(0xFF25334F);
+
+  /// Hairline highlight used to give dark cards a subtle top edge (glass).
+  static const Color cardHighlightDark = Color(0x33FFFFFF);
+  static const Color cardHighlightLight = Color(0x66FFFFFF);
 
   // ── Vehicle-status colors (used across map & dashboards) ─────────────
   static const Color statusOnRoute = Color(0xFF2C5BF2);

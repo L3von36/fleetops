@@ -25,7 +25,15 @@ class _LoginScreenState extends State<LoginScreen> {
     (Role.fleetManager, Icons.dashboard_rounded),
     (Role.dispatcher, Icons.hub_rounded),
     (Role.driver, Icons.local_shipping_rounded),
+    (Role.superAdmin, Icons.admin_panel_settings_rounded),
+    (Role.maintenance, Icons.build_rounded),
+    (Role.safety, Icons.health_and_safety_rounded),
+    (Role.finance, Icons.payments_rounded),
+    (Role.depot, Icons.warehouse_rounded),
+    (Role.customer, Icons.inventory_2_rounded),
     (Role.executive, Icons.insights_rounded),
+    (Role.auditor, Icons.plagiarism_rounded),
+    (Role.fuelManager, Icons.local_gas_station_rounded),
   ];
 
   Future<void> _submit(Role? role) async {
@@ -233,7 +241,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ],
                         ),
                         const Spacer(),
-                        Text('FleetOps Platform v1.0 — PRD-aligned demo build',
+                        Text('FleetOps Platform v1.1 — 12 role dashboards · PRD-aligned demo build',
                             style: theme.textTheme.labelSmall?.copyWith(
                                 color: Colors.white.withValues(alpha: 0.55))),
                       ],

@@ -1,4 +1,4 @@
-package com.example.fleetops
+package com.fleetops.app
 
 import io.flutter.embedding.android.FlutterActivity
 

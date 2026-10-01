@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart' show CupertinoPageTransitionsBuilder;
 import 'package:flutter/material.dart';
 
 import 'palette.dart';
@@ -132,6 +133,13 @@ abstract final class AppTheme {
       dividerTheme: DividerThemeData(color: outline, thickness: 1, space: 1),
       splashColor: primary.withValues(alpha: 0.08),
       highlightColor: primary.withValues(alpha: 0.05),
+      pageTransitionsTheme: const PageTransitionsTheme(builders: {
+        TargetPlatform.android: ZoomPageTransitionsBuilder(),
+        TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+        TargetPlatform.linux: ZoomPageTransitionsBuilder(),
+        TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
+        TargetPlatform.windows: ZoomPageTransitionsBuilder(),
+      }),
       appBarTheme: AppBarTheme(
         backgroundColor: background,
         surfaceTintColor: Colors.transparent,
@@ -263,6 +271,65 @@ abstract final class AppTheme {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         titleTextStyle: textTheme.titleLarge,
       ),
+      iconTheme: IconThemeData(color: textMuted, size: 22),
+      scrollbarTheme: ScrollbarThemeData(
+        thickness: WidgetStatePropertyAll(isDark ? 7.0 : 8.0),
+        thumbVisibility: const WidgetStatePropertyAll(false),
+        radius: Radius.circular(999),
+        thumbColor: WidgetStatePropertyAll(
+            textMuted.withValues(alpha: isDark ? 0.45 : 0.35)),
+      ),
+      dropdownMenuTheme: DropdownMenuThemeData(
+        textStyle: textTheme.bodyMedium,
+        inputDecorationTheme: InputDecorationTheme(
+          filled: true,
+          fillColor: isDark ? surfaceAlt : Palette.bgLight,
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: outline),
+          ),
+        ),
+      ),
+      popupMenuTheme: PopupMenuThemeData(
+        color: surface,
+        surfaceTintColor: Colors.transparent,
+        elevation: isDark ? 12 : 8,
+        shadowColor: Colors.black.withValues(alpha: isDark ? 0.55 : 0.18),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(14),
+          side: BorderSide(color: outline),
+        ),
+        textStyle: textTheme.bodyMedium,
+      ),
+      menuTheme: MenuThemeData(
+        style: MenuStyle(
+          backgroundColor: WidgetStatePropertyAll(surface),
+          surfaceTintColor: const WidgetStatePropertyAll(Colors.transparent),
+          elevation: const WidgetStatePropertyAll(8),
+          shape: WidgetStatePropertyAll(RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(14))),
+        ),
+      ),
+      segmentedButtonTheme: SegmentedButtonThemeData(
+        style: ButtonStyle(
+          shape: WidgetStatePropertyAll(RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10))),
+          side: WidgetStatePropertyAll(BorderSide(color: outline)),
+          textStyle: WidgetStatePropertyAll(
+              textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w600)),
+        ),
+      ),
+      switchTheme: SwitchThemeData(
+        trackOutlineColor:
+            WidgetStatePropertyAll(outline.withValues(alpha: 0.6)),
+      ),
+      checkboxTheme: CheckboxThemeData(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+        side: BorderSide(color: textMuted, width: 1.6),
+      ),
+      visualDensity: VisualDensity.standard,
     );
   }
 }

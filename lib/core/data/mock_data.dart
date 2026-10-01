@@ -204,3 +204,122 @@ List<Vehicle> tick(List<Vehicle> list, Random rng) {
         mapPos: OffsetXy(nx, ny), speedKph: speed, fuelPct: fuel, etaMinutes: eta);
   }).toList();
 }
+
+// ══════════════════════════════════ Platform admin (§3.1) — demo data ═══
+
+final List<OrgTenant> tenants = [
+  OrgTenant(name: 'Mombasa Road Haulage', plan: 'Enterprise', seatsUsed: 42, seatsTotal: 60, status: 'Active', region: 'EU/KE East', vehicles: 118),
+  OrgTenant(name: 'FreshLine Markets', plan: 'Growth', seatsUsed: 18, seatsTotal: 25, status: 'Active', region: 'EU/KE East', vehicles: 46),
+  OrgTenant(name: 'TransBorder AG', plan: 'Enterprise', seatsUsed: 55, seatsTotal: 80, status: 'Active', region: 'EU Central', vehicles: 204),
+  OrgTenant(name: 'City Transit Co.', plan: 'Growth', seatsUsed: 24, seatsTotal: 25, status: 'Active', region: 'EU/KE East', vehicles: 64),
+  OrgTenant(name: 'ArcticFoods Ltd', plan: 'Growth', seatsUsed: 12, seatsTotal: 25, status: 'Trial', region: 'Nordics', vehicles: 21),
+  OrgTenant(name: 'Kilimall Express', plan: 'Starter', seatsUsed: 8, seatsTotal: 10, status: 'Active', region: 'EU/KE East', vehicles: 33),
+  OrgTenant(name: 'BuildCo Ltd', plan: 'Starter', seatsUsed: 5, seatsTotal: 10, status: 'Suspended', region: 'EU/KE East', vehicles: 12),
+];
+
+final List<IntegrationHealth> integrations = [
+  IntegrationHealth(name: 'MQTT telemetry broker', kind: 'IoT', ok: true, latencyMs: 42, detail: '1.2M msg/min · 0 lag'),
+  IntegrationHealth(name: 'Maps & traffic provider', kind: 'Geo', ok: true, latencyMs: 118, detail: 'quota 64% used'),
+  IntegrationHealth(name: 'ERP connector (SAP-type)', kind: 'ERP', ok: false, latencyMs: 1240, detail: 'retrying — 4 timeouts in 15 min'),
+  IntegrationHealth(name: 'Fuel card feed', kind: 'Finance', ok: true, latencyMs: 210, detail: 'last sync 3 min ago'),
+  IntegrationHealth(name: 'SMS gateway', kind: 'Notify', ok: true, latencyMs: 86, detail: 'delivery 99.2%'),
+  IntegrationHealth(name: 'Accounting export', kind: 'Finance', ok: true, latencyMs: 95, detail: 'QuickBooks-type · nightly'),
+];
+
+final List<AuditEntry> auditLog = [
+  AuditEntry(actor: 'j.kimani@fleetops.io', action: 'trip.reassign', target: 'TRP-9043', time: '09:41', result: 'success'),
+  AuditEntry(actor: 'service:ingest-gw', action: 'device.pair', target: 'GPS-55219', time: '09:38', result: 'success'),
+  AuditEntry(actor: 'unknown (token expired)', action: 'api.trips.list', target: '/api/v1/trips', time: '09:33', result: 'denied'),
+  AuditEntry(actor: 'g.achieng@fleetops.io', action: 'po.upload', target: 'TRP-9035', time: '09:29', result: 'success'),
+  AuditEntry(actor: 'admin@fleetops.io', action: 'role.update', target: 'Dispatcher · +approve.expenses', time: '09:12', result: 'warning'),
+  AuditEntry(actor: 'm.njoroge@fleetops.io', action: 'doc.upload', target: 'License renew — D-07', time: '08:55', result: 'success'),
+  AuditEntry(actor: 'api:buildco-key', action: 'invoice.export', target: 'INV-2201..2214', time: '08:40', result: 'denied'),
+];
+
+final List<FeatureFlag> featureFlags = [
+  FeatureFlag('auto_dispatch_suggest', 'Rank vehicles for auto-assignment (PRD FR-22)', true, 60),
+  FeatureFlag('predictive_maintenance', 'ML failure-probability per component (FR-34)', false, 0),
+  FeatureFlag('cold_chain_sensors', 'Temp/humidity threshold alerts (FR-44)', true, 100),
+  FeatureFlag('ev_dashboard_v2', 'Charging sessions + kWh/100km analytics (FR-28)', true, 35),
+  FeatureFlag('dashcam_event_video', 'AI cam event clips in incidents (FR-41)', false, 0),
+  FeatureFlag('customer_public_tracking', 'Share-able live tracking links (FR-23)', true, 100),
+];
+
+// ══════════════════════════════════════ Depot / yard (§3.9) — demo data ═══
+
+final List<DockSlot> dockSlots = [
+  DockSlot(id: 'D1', state: DockState.loading, vehicleId: 'V-105', window: '09:00–11:00', loadPct: 0.72),
+  DockSlot(id: 'D2', state: DockState.loading, vehicleId: 'V-102', window: '09:30–11:30', loadPct: 0.45),
+  DockSlot(id: 'D3', state: DockState.done, vehicleId: 'V-101', window: '08:00–10:00', loadPct: 1),
+  DockSlot(id: 'D4', state: DockState.free, vehicleId: '', window: '11:00–13:00', loadPct: 0),
+  DockSlot(id: 'D5', state: DockState.blocked, vehicleId: '—', window: '—', loadPct: 0),
+  DockSlot(id: 'D6', state: DockState.free, vehicleId: '', window: '13:00–15:00', loadPct: 0),
+  DockSlot(id: 'B1', state: DockState.loading, vehicleId: 'V-110', window: '10:00–12:00', loadPct: 0.18),
+  DockSlot(id: 'B2', state: DockState.done, vehicleId: 'V-108', window: '07:30–09:30', loadPct: 1),
+];
+
+final List<YardEvent> yardEvents = [
+  YardEvent(plate: 'FMS-4821', direction: 'in', gate: 'Gate A', timeAgo: '08:42', onTime: true),
+  YardEvent(plate: 'FMS-5107', direction: 'out', gate: 'Gate B (cold)', timeAgo: '08:15', onTime: true),
+  YardEvent(plate: 'FMS-6690', direction: 'in', gate: 'Gate A', timeAgo: '09:02', onTime: false),
+  YardEvent(plate: 'FMS-9014', direction: 'out', gate: 'Gate C', timeAgo: '07:58', onTime: true),
+  YardEvent(plate: 'FMS-2288', direction: 'in', gate: 'Gate A', timeAgo: '09:20', onTime: false),
+];
+
+final List<CargoReading> cargoReadings = [
+  CargoReading(vehicleId: 'V-102 · FMS-5107', cargo: 'Frozen vegetables', tempC: -18.4, targetC: -18, humidityPct: 62),
+  CargoReading(vehicleId: 'V-110 · FMS-5526', cargo: 'Fresh dairy', tempC: 6.1, targetC: 4, humidityPct: 71),
+  CargoReading(vehicleId: 'V-104 · FMS-7345', cargo: 'Pharmaceuticals', tempC: 7.9, targetC: 8, humidityPct: 45),
+];
+
+final List<(String, String, String)> dockSchedule = [
+  ('TRP-9046', 'ArcticFoods Ltd', 'Inbound · Cold Store 1 · 13:10'),
+  ('TRP-9041', 'FreshLine Markets', 'Outbound · Dock D2 · 11:24'),
+  ('TRP-9045', 'GreenCharge Logistics', 'Outbound · Dock D1 · 11:36'),
+  ('TRP-9043', 'TransBorder AG', 'Inbound · Border Gate · 14:40'),
+  ('TRP-9042', 'BuildCo Ltd', 'Inbound · Port Yard · 12:05'),
+];
+
+// ══════════════════════════════════ Customer portal (§3.10) — demo data ═══
+
+final List<Shipment> myShipments = [
+  Shipment(id: 'SHP-7781', customer: 'FreshLine Markets', route: 'Depot A → Cold Store 4', status: 'In transit', eta: '11:24', progress: 0.72, tempC: -18.2),
+  Shipment(id: 'SHP-7782', customer: 'FreshLine Markets', route: 'Depot A → Cold Store 1', status: 'Out for delivery', eta: '13:10', progress: 0.05, tempC: 3.8),
+  Shipment(id: 'SHP-7779', customer: 'FreshLine Markets', route: 'Depot A → Retail Hub 12', status: 'Delivered', eta: '09:58', progress: 1, tempC: 4.1),
+  Shipment(id: 'SHP-7775', customer: 'FreshLine Markets', route: 'Cold Store 4 → Retail Hub 3', status: 'Delivered', eta: 'Yesterday', progress: 1, tempC: -17.9),
+];
+
+final List<PodRecord> podRecords = [
+  PodRecord(shipmentId: 'SHP-7779', signedBy: 'M. Deli (Store mgr)', time: 'Today 09:58', method: 'Signature', location: 'Retail Hub 12'),
+  PodRecord(shipmentId: 'SHP-7775', signedBy: 'A. Karim', time: 'Yesterday 16:20', method: 'Photo + QR', location: 'Retail Hub 3'),
+];
+
+final List<Invoice> myInvoices = [
+  Invoice(id: 'INV-2201', customer: 'FreshLine Markets', amount: 4820, dueIn: 'Due in 12 days', status: 'Outstanding'),
+  Invoice(id: 'INV-2187', customer: 'FreshLine Markets', amount: 3950, dueIn: 'Due in 3 days', status: 'Outstanding'),
+  Invoice(id: 'INV-2164', customer: 'FreshLine Markets', amount: 5110, dueIn: 'Paid Oct 02', status: 'Paid'),
+  Invoice(id: 'INV-2150', customer: 'FreshLine Markets', amount: 1240, dueIn: 'Overdue 6 days', status: 'Overdue'),
+];
+
+final List<ClaimRecord> claims = [
+  ClaimRecord(id: 'CLM-118', subject: 'Carton crush damage — SHP-7770', opened: 'Sep 28', status: 'In review', amount: 340),
+  ClaimRecord(id: 'CLM-114', subject: 'Late delivery credit — SHP-7761', opened: 'Sep 21', status: 'Resolved', amount: 120),
+];
+
+// ═══════════════════════════════════════ Auditor view (§3.12) — demo data ═══
+
+final List<InspectionRecord> inspections = [
+  InspectionRecord(id: 'INS-3301', vehicleId: 'V-101 · FMS-4821', kind: 'Pre-trip', date: 'Today 07:12', passed: true, defects: 0, inspector: 'D-01 J. Kimani'),
+  InspectionRecord(id: 'INS-3300', vehicleId: 'V-102 · FMS-5107', kind: 'Pre-trip', date: 'Today 06:50', passed: true, defects: 0, inspector: 'D-02 G. Achieng'),
+  InspectionRecord(id: 'INS-3298', vehicleId: 'V-106 · FMS-3120', kind: 'Post-trip', date: 'Yesterday 18:44', passed: false, defects: 2, inspector: 'D-06 D. Mutua'),
+  InspectionRecord(id: 'INS-3295', vehicleId: 'V-109 · FMS-4471', kind: 'Annual', date: 'Sep 28', passed: true, defects: 1, inspector: 'Vendor: AutoCheck'),
+  InspectionRecord(id: 'INS-3291', vehicleId: 'V-107 · FMS-8842', kind: 'Pre-trip', date: 'Sep 27', passed: false, defects: 3, inspector: 'D-07 M. Njoroge'),
+];
+
+final List<AuditEntry> auditorTrail = [
+  AuditEntry(actor: 'auditor@transtech.gov', action: 'hos.log.view', target: 'D-01 · Oct 01', time: '09:44', result: 'success'),
+  AuditEntry(actor: 'auditor@transtech.gov', action: 'doc.download', target: 'Insurance — V-104', time: '09:41', result: 'success'),
+  AuditEntry(actor: 'auditor@transtech.gov', action: 'inspection.history', target: 'V-107 · 12 records', time: '09:39', result: 'success'),
+  AuditEntry(actor: 'auditor@transtech.gov', action: 'driver.salary.view', target: 'D-01', time: '09:38', result: 'denied'),
+  AuditEntry(actor: 'system', action: 'access.grant', target: 'Auditor · expires Oct 08 17:00', time: 'Oct 01 08:00', result: 'warning'),
+];

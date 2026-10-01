@@ -47,18 +47,45 @@ jobs:
         run: flutter analyze
         continue-on-error: true
 
-      - name: Build release APK
+      - name: Decode release keystore (from repo secrets)
+        env:
+          KS_B64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          KS_PASS: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KS_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KS_KEYPASS: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          if [ -n "$KS_B64" ]; then
+            echo "$KS_B64" | base64 -d > "$GITHUB_WORKSPACE/fleetops-release-key.jks"
+            cat > android/key.properties <<EOF
+          storeFile=$GITHUB_WORKSPACE/fleetops-release-key.jks
+          storePassword=$KS_PASS
+          keyAlias=$KS_ALIAS
+          keyPassword=$KS_KEYPASS
+          EOF
+            echo "Release signing: ENABLED (keystore from secrets)"
+          else
+            echo "Release signing: NOT configured — falling back to debug keys"
+          fi
+
+      - name: Build release APK (signed)
         run: flutter build apk --release
 
-      - name: Rename APK
+      - name: Build release App Bundle (signed)
+        run: flutter build appbundle --release
+
+      - name: Rename artifacts
         run: |
           cp build/app/outputs/flutter-apk/app-release.apk \
              "FleetOps-Android-${GITHUB_REF_NAME}.apk"
+          cp build/app/outputs/flutter-release.aab \
+             "FleetOps-Android-${GITHUB_REF_NAME}.aab"
 
       - uses: actions/upload-artifact@v4
         with:
           name: FleetOps-Android
-          path: FleetOps-Android-*.apk
+          path: |
+            FleetOps-Android-*.apk
+            FleetOps-Android-*.aab
           if-no-files-found: error
 
   # -------------------------------------------------------------------- Web
@@ -238,6 +265,7 @@ jobs:
             | File | Platform | Install |
             | --- | --- | --- |
             | `FleetOps-Android-*.apk` | Android 7.0+ | Enable "Install unknown apps", open the APK |
+            | `FleetOps-Android-*.aab` | Google Play | Upload via Play Console |
             | `FleetOps-Windows-*.zip` | Windows 10/11 x64 | Unzip → run `fleetops.exe` |
             | `FleetOps-macOS-*.zip` | macOS (Apple Silicon + Intel) | Unzip → right-click `fleetops.app` → **Open** (unsigned build) |
             | `FleetOps-Linux-*.tar.gz` | Linux x64 | `mkdir app && tar -xzf *.tar.gz -C app && ./app/fleetops` |

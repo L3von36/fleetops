@@ -334,3 +334,190 @@ class MultiSeries {
   final List<SeriesPoint> points;
   final Color color;
 }
+
+// ─────────────────────────────────────────── Platform admin (§3.1) ─────
+
+class OrgTenant {
+  const OrgTenant({
+    required this.name,
+    required this.plan,
+    required this.seatsUsed,
+    required this.seatsTotal,
+    required this.status, // Active / Trial / Suspended
+    required this.region,
+    required this.vehicles,
+  });
+
+  final String name;
+  final String plan;
+  final int seatsUsed;
+  final int seatsTotal;
+  final String status;
+  final String region;
+  final int vehicles;
+
+  String get statusLabel => status;
+}
+
+class IntegrationHealth {
+  const IntegrationHealth({
+    required this.name,
+    required this.kind,
+    required this.ok, // true = healthy, false = degraded
+    required this.latencyMs,
+    required this.detail,
+  });
+
+  final String name;
+  final String kind;
+  final bool ok;
+  final int latencyMs;
+  final String detail;
+}
+
+class AuditEntry {
+  const AuditEntry({
+    required this.actor,
+    required this.action,
+    required this.target,
+    required this.time,
+    required this.result, // success | denied | warning
+  });
+
+  final String actor;
+  final String action;
+  final String target;
+  final String time;
+  final String result;
+}
+
+class FeatureFlag {
+  const FeatureFlag(this.key, this.description, this.enabled, this.rolloutPct);
+
+  final String key;
+  final String description;
+  final bool enabled;
+  final int rolloutPct;
+
+  FeatureFlag toggle(bool v) =>
+      FeatureFlag(key, description, v, rolloutPct);
+}
+
+// ───────────────────────────────────────────── Depot / yard (§3.9) ─────
+
+enum DockState { free, loading, done, blocked }
+
+extension DockStateX on DockState {
+  String get label => switch (this) {
+        DockState.free => 'Free',
+        DockState.loading => 'Loading',
+        DockState.done => 'Ready',
+        DockState.blocked => 'Blocked',
+      };
+}
+
+class DockSlot {
+  const DockSlot({
+    required this.id,
+    required this.state,
+    required this.vehicleId,
+    required this.window,
+    required this.loadPct,
+  });
+
+  final String id;
+  final DockState state;
+  final String vehicleId; // '' when free
+  final String window;
+  final double loadPct; // 0..1
+}
+
+class YardEvent {
+  const YardEvent({
+    required this.plate,
+    required this.direction, // in / out
+    required this.gate,
+    required this.timeAgo,
+    required this.onTime,
+  });
+
+  final String plate;
+  final String direction;
+  final String gate;
+  final String timeAgo;
+  final bool onTime;
+}
+
+class CargoReading {
+  const CargoReading({
+    required this.vehicleId,
+    required this.cargo,
+    required this.tempC,
+    required this.targetC,
+    required this.humidityPct,
+  });
+
+  final String vehicleId;
+  final String cargo;
+  final double tempC;
+  final double targetC;
+  final double humidityPct;
+
+  bool get inRange => (tempC - targetC).abs() <= 2.0;
+}
+
+// ───────────────────────────────────────── Customer portal (§3.10) ─────
+
+class PodRecord {
+  const PodRecord({
+    required this.shipmentId,
+    required this.signedBy,
+    required this.time,
+    required this.method,
+    required this.location,
+  });
+
+  final String shipmentId;
+  final String signedBy;
+  final String time;
+  final String method; // Signature / Photo / QR
+  final String location;
+}
+
+class ClaimRecord {
+  const ClaimRecord({
+    required this.id,
+    required this.subject,
+    required this.opened,
+    required this.status, // Open / In review / Resolved
+    required this.amount,
+  });
+
+  final String id;
+  final String subject;
+  final String opened;
+  final String status;
+  final double amount;
+}
+
+// ────────────────────────────────────────── Auditor view (§3.12) ───────
+
+class InspectionRecord {
+  const InspectionRecord({
+    required this.id,
+    required this.vehicleId,
+    required this.kind, // Pre-trip / Post-trip / Annual
+    required this.date,
+    required this.passed,
+    required this.defects,
+    required this.inspector,
+  });
+
+  final String id;
+  final String vehicleId;
+  final String kind;
+  final String date;
+  final bool passed;
+  final int defects;
+  final String inspector;
+}

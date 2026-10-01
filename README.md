@@ -10,6 +10,24 @@ Windows, macOS and Linux**.
 > live vehicle positions/speeds every 2 s to emulate the real-time backbone
 > (PRD target: position latency ≤ 10 s).
 
+## 🆕 v1.1 highlights
+
+- **All 12 PRD role dashboards** — new: Super Admin (platform governance),
+  Depot & Yard (docks, geofence check-ins, cold chain), Customer Portal
+  (shipments, POD, invoices, SLA), Auditor (read-only, time-boxed access).
+- **UI/UX overhaul** — grouped navigation sidebar with collapse, live
+  notifications sheet, role switcher (12 workspaces in one tap), redesigned
+  KPI tiles with trend pills & gradient icon chips, new empty states,
+  page transitions, polished menus/scrollbars/segmented buttons.
+- **SafeArea everywhere** — notch/gesture-bar aware on phones (sidebar,
+  top bar, bottom nav, sheets, drawer).
+- **Custom launcher icon set** — generated per platform (adaptive Android,
+  iOS/macOS asset catalogs, web + maskable, Windows .ico).
+- **Native splash screens** — Android 12+ & legacy, iOS, web.
+- **Signed Android releases** — CI decodes a keystore from repo secrets
+  (`ANDROID_KEYSTORE_*`), signs the APK **and** publishes a Play-ready
+  `.aab`. Local builds fall back to debug signing automatically.
+
 ## 🌐 Live web demo & 📦 downloads
 
 - **Live demo (GitHub Pages):** <https://l3von36.github.io/fleetops/>
@@ -85,11 +103,25 @@ lib/
 │   ├── state/                 # AppState (role, theme, live sim) + AppScope
 │   └── widgets/               # design-system components & custom charts/map
 └── features/
-    ├── auth/                  # login (split hero, role quick-enter)
+    ├── auth/                  # login (split hero, 12 quick-enter roles)
     ├── shell/                 # adaptive sidebar / rail / bottom-nav shell
-    ├── dashboard/             # 8 role dashboards
+    ├── dashboard/             # 12 role dashboards (full PRD §3 coverage)
     └── settings/              # notifications, privacy, integrations
 ```
+
+## 🔐 Android release signing
+
+The keystore is **not** committed. CI reads repo secrets:
+
+| Secret | Purpose |
+| --- | --- |
+| `ANDROID_KEYSTORE_BASE64` | base64 of the `.jks` keystore |
+| `ANDROID_KEYSTORE_PASSWORD` | keystore password |
+| `ANDROID_KEY_ALIAS` | key alias (`fleetops`) |
+| `ANDROID_KEY_PASSWORD` | key password |
+
+Local release builds without `android/key.properties` fall back to debug
+signing, so `flutter run --release` keeps working.
 
 ## Next steps toward production (per PRD §6)
 
